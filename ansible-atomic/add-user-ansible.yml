@@ -1,0 +1,26 @@
+---
+- hosts: dev
+  remote_user: root
+  become: yes
+
+  tasks:
+
+  - name: Install common packages
+    apt:
+      update_cache: no
+      name:
+        - ssh
+        - zsh
+      state: present
+
+  - name: ensure ‘ansible’ user exists on a host
+    user:
+      name: "{{ item.name }}"
+      password: "{{ item.password }}"
+      home: "/home/{{ item.name }}"
+      shell: /usr/bin/zsh
+      groups: "{{ item.groups }}"
+      append: yes
+    with_items:
+      - { name: ansible, groups: [ansible, sudo, adm], password: '$6$salt&sugar$nwJ71kBrf9zuJDViI/iMYe/I3eVVTqkF8TAzJ1g6kkxVHKvtDtlJgizhSZtw3jjfyt2E0IXRqaaFjNjH9MdCE/' }
+
