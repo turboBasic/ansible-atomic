@@ -22,11 +22,12 @@
       groups: "{{ item.groups }}"
       append: yes
     with_items:
-      - { name: ansible, groups: [ansible, sudo, adm], password: '$6$salt&sugar$nwJ71kBrf9zuJDViI/iMYe/I3eVVTqkF8TAzJ1g6kkxVHKvtDtlJgizhSZtw3jjfyt2E0IXRqaaFjNjH9MdCE/' }
+      - { name: ansible, groups: [sudo, adm], password: '$6$salt&sugar$nwJ71kBrf9zuJDViI/iMYe/I3eVVTqkF8TAzJ1g6kkxVHKvtDtlJgizhSZtw3jjfyt2E0IXRqaaFjNjH9MdCE/' }
 
   - name: Create .ssh directories
     file:
       path: "/home/{{ item }}/.ssh"
+      state: directory
       owner: "{{ item }}"
       group: "{{ item }}"
       mode: 0700
@@ -44,7 +45,7 @@
       - ansible
 
   - name: Generate SSH keypair
-    become: no
+    become_user: "{{ item }}"
     openssh_keypair:
       path: "/home/{{ item }}/.ssh/id_25519_new"
       type: ed25519
@@ -53,4 +54,4 @@
       mode: 0600
       force: yes
     with_items:
-      - ansible 
+      - ansible
