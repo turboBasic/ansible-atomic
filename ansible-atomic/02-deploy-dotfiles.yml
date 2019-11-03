@@ -1,0 +1,14 @@
+---
+- hosts: dev
+  become: yes
+
+
+  tasks:
+
+  - name: Clone dotfiles
+    command: "git clone --depth 1 --single-branch --recurse-submodules ssh://git@github.com/turboBasic/dotfiles.git"
+    args:
+      chdir: "{{ item.home }}"
+      creates: "{{ item.home }}/dotfiles"
+    become_user: "{{ item.name }}"
+    with_items: "{{ users }}"
