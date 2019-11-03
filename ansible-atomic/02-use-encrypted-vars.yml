@@ -1,5 +1,7 @@
 ---
-- hosts: dev
+- name: Using encrypted variables
+  hosts: dev
+  gather_facts: no
 
   tasks:
     - name: Debug vault
@@ -11,14 +13,3 @@
           - "Variable variable_which_uses_secret_variable = {{ variable_which_uses_secret_variable }}"
           - "Users to process: {{ users }}"
 
-    - name: Debug host variables
-      debug:
-        var: hostvars[inventory_hostname]["ansible_lsb"]
-
-    - name: Debug ansible user
-      shell: echo ${USER}
-      register: output
-      changed_when: false
-
-    - debug:
-        msg: "{{ output.stdout }}"

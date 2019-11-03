@@ -1,0 +1,8 @@
+---
+- hosts: dev
+
+  tasks:
+    - name: Debug host variables
+      debug:
+        var: hostvars[inventory_hostname]["ansible_lsb"]
+

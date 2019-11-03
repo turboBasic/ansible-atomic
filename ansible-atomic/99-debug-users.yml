@@ -1,0 +1,13 @@
+---
+- name: Debug user info
+  hosts: dev
+  gather_facts: false
+
+  tasks:
+    - name: Debug ansible user
+      shell: echo ${USER}
+      register: output
+      changed_when: false
+
+    - debug:
+        msg: "{{ output.stdout }}"
