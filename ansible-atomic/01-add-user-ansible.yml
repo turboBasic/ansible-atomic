@@ -1,7 +1,7 @@
 ---
 - hosts: dev
-  remote_user: root
   become: yes
+
 
   tasks:
 
@@ -17,41 +17,40 @@
     user:
       name: "{{ item.name }}"
       password: "{{ item.password }}"
-      home: "/home/{{ item.name }}"
-      shell: /usr/bin/zsh
+      home: "{{ item.home }}"
+      shell: "{{ item.shell }}"
       groups: "{{ item.groups }}"
       append: yes
-    with_items:
-      - { name: ansible, groups: [sudo, adm], password: '$6$salt&sugar$nwJ71kBrf9zuJDViI/iMYe/I3eVVTqkF8TAzJ1g6kkxVHKvtDtlJgizhSZtw3jjfyt2E0IXRqaaFjNjH9MdCE/' }
+    with_items: "{{ users }}"
 
   - name: Create .ssh directories
     file:
-      path: "/home/{{ item }}/.ssh"
+      path: "{{ item.home }}/.ssh"
       state: directory
-      owner: "{{ item }}"
-      group: "{{ item }}"
+      owner: "{{ item.name }}"
+      group: "{{ item.name }}"
       mode: 0700
-    with_items:
-      - ansible
+    with_items: "{{ users }}"
 
   - name: Copy authorized public keys
     copy:
       src: authorized_keys
-      dest: "/home/{{ item }}/.ssh"
-      owner: "{{ item }}"
-      group: "{{ item }}"
+      dest: "{{ item.home }}/.ssh"
+      owner: "{{ item.name }}"
+      group: "{{ item.name }}"
       mode: 0644
-    with_items:
-      - ansible
+    with_items: "{{ users }}"
 
   - name: Generate SSH keypair
-    become_user: "{{ item }}"
     openssh_keypair:
-      path: "/home/{{ item }}/.ssh/id_25519_new"
+      path: "{{ item.home }}/.ssh/id_25519_new"
       type: ed25519
-      group: "{{ item }}"
-      owner: "{{ item }}"
+      group: "{{ item.name }}"
+      owner: "{{ item.name }}"
       mode: 0600
-      force: yes
-    with_items:
-      - ansible
+    with_items: "{{ users }}"
+
+  - name: Debug info
+    debug:
+      var: item.name
+    with_items: "{{ users }}"

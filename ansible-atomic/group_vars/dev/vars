@@ -1,4 +1,9 @@
 users:
-    - ansible
+  - name: ansible
+    password: '$6$salt&sugar$nwJ71kBrf9zuJDViI/iMYe/I3eVVTqkF8TAzJ1g6kkxVHKvtDtlJgizhSZtw3jjfyt2E0IXRqaaFjNjH9MdCE/'
+    groups: [ sudo, adm ]
+    shell: /usr/bin/zsh
+    home: /home/ansible
+
 non_secret_variable: non secret value
 variable_which_uses_secret_variable: "value :: {{ vault_secret_variable_1 }}"
