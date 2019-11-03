@@ -5,7 +5,7 @@
 
   tasks:
 
-  - name: Install common packages
+  - name: Install packages
     apt:
       update_cache: no
       name:
@@ -13,7 +13,7 @@
         - zsh
       state: present
 
-  - name: ensure ‘ansible’ user exists on a host
+  - name: Ensure users exist on a host
     user:
       name: "{{ item.name }}"
       password: "{{ item.password }}"
@@ -24,3 +24,21 @@
     with_items:
       - { name: ansible, groups: [ansible, sudo, adm], password: '$6$salt&sugar$nwJ71kBrf9zuJDViI/iMYe/I3eVVTqkF8TAzJ1g6kkxVHKvtDtlJgizhSZtw3jjfyt2E0IXRqaaFjNjH9MdCE/' }
 
+  - name: Create .ssh directories
+    file:
+      path: "/home/{{ item }}/.ssh"
+      owner: "{{ item }}"
+      group: "{{ item }}"
+      mode: 0700
+    with_items:
+      - ansible
+
+  - name: Copy public keys
+    copy:
+      src: authorized_keys
+      dest: "/home/{{ item }}/.ssh"
+      owner: "{{ item }}"
+      group: "{{ item }}"
+      mode: 0644
+    with_items:
+      - ansible
