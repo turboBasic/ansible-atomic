@@ -49,3 +49,20 @@
       owner: "{{ item.name }}"
       mode: 0600
     with_items: "{{ users }}"
+
+  - name: Copy SSH keypair
+    copy:
+      src: id_ed25519_off
+      dest: "{{ item.home }}/.ssh"
+      owner: "{{ item.name }}"
+      group: "{{ item.name }}"
+      mode: 0600
+    with_items: "{{ users }}"
+
+  - name: Extract public key
+    shell: ssh-keygen -y -f id_ed25519_off > id_ed25519_off.pub
+    args:
+      chdir: "{{ item.home }}/.ssh"
+      creates: "{{ item.home }}/.ssh/id_ed25519_off.pub"
+    become_user: "{{ item.name }}"
+    with_items: "{{ users }}"
