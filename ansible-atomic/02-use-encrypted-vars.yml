@@ -9,3 +9,7 @@
           - "Variable secret_variable_2 = {{ vault_secret_variable_2 }}"
           - "Variable non_secret_variable = {{ non_secret_variable }}"
           - "Variable variable_which_uses_secret_variable = {{ variable_which_uses_secret_variable }}"
+
+    - name: Debug host variables
+      debug:
+        var: hostvars[inventory_hostname]["ansible_lsb"]
