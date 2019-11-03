@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "hosts": "ini"
+        "hosts": "ini",
+        "vars": "yaml"
     }
 }
