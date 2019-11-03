@@ -1,8 +1,9 @@
 dev:
   hosts:
     localhost
-    sscc
+    other_host
+    192.168.0.1
   vars:
-    ansible_user: bob 
-    ansible_connection: ssh 
+    ansible_user: bob
+    ansible_connection: ssh
     ansible_private_key_file: ~/.ssh/id_rsa
