@@ -1,0 +1,23 @@
+---
+- hosts: dev
+  become: yes
+
+  tasks:
+  - name: Copy SSH files with permissions
+    copy:
+      src: "{{ item.1.path }}"
+      dest: "{{ item.0.home }}/.ssh"
+      owner: "{{ item.0.name }}"
+      group: "{{ item.0.name }}"
+      mode: "{{ item.1.mode }}"
+    vars:
+      files:
+        - path: 'ssh/authorized_keys'
+          mode: '0644'
+        - path: 'ssh/id_ed25519_off.pub'
+          mode: '0644'
+        - path: 'ssh/id_ed25519_off'
+          mode: '0600'
+        - path: 'ssh/config'
+          mode: '0600'
+    loop: "{{ users| product(files)| list }}"
