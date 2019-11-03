@@ -49,8 +49,3 @@
       owner: "{{ item.name }}"
       mode: 0600
     with_items: "{{ users }}"
-
-  - name: Debug info
-    debug:
-      var: item.name
-    with_items: "{{ users }}"
