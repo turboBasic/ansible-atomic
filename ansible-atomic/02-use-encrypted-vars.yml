@@ -14,3 +14,11 @@
     - name: Debug host variables
       debug:
         var: hostvars[inventory_hostname]["ansible_lsb"]
+
+    - name: Debug ansible user
+      shell: echo ${USER}
+      register: output
+      changed_when: false
+
+    - debug:
+        msg: "{{ output.stdout }}"
