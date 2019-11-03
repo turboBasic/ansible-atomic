@@ -1,6 +1,6 @@
 hosts
 hosts.yml
-.vault_pass
+.vault_pass*
 
 
 # Tmp files
