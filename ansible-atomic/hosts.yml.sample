@@ -1,7 +1,7 @@
 dev:
   hosts:
     localhost
-    server9
+    sscc
   vars:
     ansible_user: bob 
     ansible_connection: ssh 
