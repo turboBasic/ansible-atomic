@@ -1,2 +1,4 @@
+users:
+    - ansible
 non_secret_variable: non secret value
 variable_which_uses_secret_variable: "value :: {{ vault_secret_variable_1 }}"
