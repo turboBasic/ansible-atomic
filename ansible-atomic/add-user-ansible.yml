@@ -33,7 +33,7 @@
     with_items:
       - ansible
 
-  - name: Copy public keys
+  - name: Copy authorized public keys
     copy:
       src: authorized_keys
       dest: "/home/{{ item }}/.ssh"
@@ -42,3 +42,15 @@
       mode: 0644
     with_items:
       - ansible
+
+  - name: Generate SSH keypair
+    become: no
+    openssh_keypair:
+      path: "/home/{{ item }}/.ssh/id_25519_new"
+      type: ed25519
+      group: "{{ item }}"
+      owner: "{{ item }}"
+      mode: 0600
+      force: yes
+    with_items:
+      - ansible 
